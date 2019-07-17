@@ -17,7 +17,7 @@ var calculadora = {
     eventosteclas: function(){
         //Tecla 0 
         document.getElementById("0").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(0, pantalla.innerHTML.length)
+           calculadora.asignarNumeroEnPantalla(0, pantalla.innerHTML.length) 
         });
         
         //Tecla 1
@@ -121,6 +121,7 @@ var calculadora = {
     //Se asigna el número en la pantalla se hace validación de 
     //puntos y la longitud del números
     asignarNumeroEnPantalla : function(numero, longitud){
+        document.getElementById(numero).style.transform = 'scale(0.8)';
         if( longitud < 8 ){
             if( longitud === 1 && pantalla.innerHTML === '0' && numero !== '.'){
                 pantalla.innerHTML = ''
@@ -132,6 +133,7 @@ var calculadora = {
                 }
             }
             pantalla.innerHTML += numero
+            document.getElementById(numero).style.transform = 'scale(1)';
         }
     },
 
