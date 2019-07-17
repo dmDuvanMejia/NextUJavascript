@@ -1,15 +1,11 @@
+//Variable global que define la pantalla de la calculadora
 var pantalla = document.getElementById("display");
-var signo = ''
-var resul = 0;
-var numero1 = ''
-var numero2 = ''
 
 var calculadora = {
 
     //Inicialización variables
-    screen1 : document.getElementById("display"),
-
-    //Function noname aplicar tipo de botón
+    //Funcion que inicializa los eventos para aplicar tipo de evento tecla, instancia array de caracteres digitados y el ultimo 
+    //numero ingresado
 
     init: (function(){
         this.eventosteclas();
@@ -19,72 +15,71 @@ var calculadora = {
 
     //Función que verifica los eventos en cada tecla requerida para la operación
     eventosteclas: function(){
-        var resultado = document.getElementById('display');
         //Tecla 0 
         document.getElementById("0").addEventListener("click", function() { 
-        calculadora.asignarNumeroEnPantalla(0, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(0, pantalla.innerHTML.length)
         });
         
         //Tecla 1
         document.getElementById("1").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(1, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(1, pantalla.innerHTML.length)
         });
 
         //Tecla 2
         document.getElementById("2").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(2, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(2, pantalla.innerHTML.length)
         });
 
         //Tecla 3
         document.getElementById("3").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(3, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(3, pantalla.innerHTML.length)
         });
 
         //Tecla 4
         document.getElementById("4").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(4, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(4, pantalla.innerHTML.length)
         });
 
         //Tecla 5
         document.getElementById("5").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(5, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(5, pantalla.innerHTML.length)
         });
 
         //Tecla 6
         document.getElementById("6").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(6, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(6, pantalla.innerHTML.length)
         });
 
         //Tecla 7
         document.getElementById("7").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(7, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(7, pantalla.innerHTML.length)
         });
 
         //Tecla 8
         document.getElementById("8").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(8, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(8, pantalla.innerHTML.length)
         });
 
         //Tecla 9
         document.getElementById("9").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla(9, resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla(9, pantalla.innerHTML.length)
         });
 
         //Tecla punto
         document.getElementById("punto").addEventListener("click", function() { 
-            calculadora.asignarNumeroEnPantalla('.', resultado.innerHTML.length)
+            calculadora.asignarNumeroEnPantalla('.', pantalla.innerHTML.length)
         });
 
         //Limpiar resultado
         document.getElementById('on').addEventListener('click', function(){
-            resul = 0;
-            resultado.innerHTML = '0';
+            pantalla.innerHTML = '0';
             calculadora.operacionMatematica = []
+            calculadora.ultimoNumero = ''
         });
 
         //Cambiar signo
         document.getElementById('sign').addEventListener('click', function(){
-            calculadora.cambiarSigno(resultado);
+            calculadora.cambiarSigno(pantalla.innerHTML);
         });
 
         //Sumar
@@ -107,6 +102,11 @@ var calculadora = {
             calculadora.ingresarDigitos( '/' );
         });
 
+        //Raiz
+        document.getElementById('raiz').addEventListener('click', function(){
+            calculadora.ingresarDigitos( '**' );
+        });
+
         //Igual
         document.getElementById('igual').addEventListener('click', function(){
             calculadora.igual();
@@ -115,12 +115,7 @@ var calculadora = {
 
     //Se cambia el signo del número en pantalla
     cambiarSigno : function(resultado){
-        let numero = parseInt( resultado.innerHTML );
-        if( numero > 0){
-            resultado.innerHTML = '-' + numero
-        }else{
-            resultado.innerHTML =  - numero
-        }
+        pantalla.innerHTML = ( parseInt( resultado ) * - 1)
     },
 
     //Se asigna el número en la pantalla se hace validación de 
@@ -140,8 +135,9 @@ var calculadora = {
         }
     },
 
+    //Al dar click en los operadores se valida que tipo de operador eligio
+    //este se guarda en un array con el numero que se tiene en pantalla
     ingresarDigitos : function( caracter ){
-        // alert('INGRESAR DIGITOS')
         let signo = ''
         switch( caracter ){
             case '+':
@@ -156,62 +152,60 @@ var calculadora = {
             case '/':
                 signo = '/'
                 break;
+            case '**':
+                signo = '** 0.5'
+                break;
         }
-        caracterPantalla = document.getElementById('display').innerHTML
-        console.log(caracterPantalla)
-        tamanioArreglo = calculadora.operacionMatematica.length
+        let caracterPantalla = pantalla.innerHTML
+        let tamanioArreglo = calculadora.operacionMatematica.length
+        let oper = calculadora.operacionMatematica
         
         if( caracterPantalla !== ''){
-            // if( tamanioArreglo === 0 ){
-                 console.log('INGRESAR DIGITOs SI ' + calculadora.operacionMatematica)
-                calculadora.operacionMatematica.push( caracterPantalla )
-                 
-                calculadora.operacionMatematica.push( signo )
-                console.log( this.operacionMatematica )
-                calculadora.ultimoNumero = caracterPantalla
-            // }else{
-                // this.operacionMatematica.push( caracterPantalla )
-                // this.operacionMatematica.push( signo )
-                // this.ultimoNumero = caracterPantalla
-            // }
-            console.log('Ultimo caracter ' + this.ultimoNumero)
+            if( caracterPantalla < 0 ){
+                caracterPantalla = '(' + caracterPantalla + ')'
+            }
+            oper.push( caracterPantalla )
+            oper.push( signo )
+            calculadora.ultimoNumero = caracterPantalla
         }else{
-            console.log('Ultimo caracter ' + this.ultimoNumero)
-            console.log(calculadora.operacionMatematica[tamanioArreglo - 1].includes('+', '-', '*', '/'))
-            // if( calculadora.operacionMatematica[tamanioArreglo - 1].includes('+', '-', '*', '/') ){
-               console.log('Contiene ' + signo)
-                this.operacionMatematica.pop()
-                this.operacionMatematica.push( signo )
-            // }
+            this.operacionMatematica.pop()
+            this.operacionMatematica.push( signo )
         }
         console.log(this.operacionMatematica)
-        // this.operacionMatematica.push( document.getElementById('display').innerHTML )
-        // if( numero1 === ''){
-        //     numero1 = document.getElementById('display').innerHTML
-        // }
-
-        // this.numerosDigitados.push(numero1 )
-        document.getElementById('display').innerHTML = ''
+      
+        pantalla.innerHTML = ''
     },
 
+    // Realiza el proceso para mostrar el resultado de la operacion
     igual : function(){
-        let caracter = document.getElementById('display').innerHTML
+        let caracter = pantalla.innerHTML
         if( caracter !== '' ){
+            if( caracter < 0 ){
+                caracter = '(' + caracter + ')'
+            }
+
+            if( calculadora.ultimoNumero !== '' && this.operacionMatematica.length > 1){
+                calculadora.ultimoNumero = caracter
+            }
+            
             this.operacionMatematica.push( caracter )
         }
-       let operacion = this.operacionMatematica.toString()
-       operacion = operacion.replace(/,/g, '')
-        // alert('NUEVA Operacion ' + operacion)
-
-       resultado = eval(operacion)
-        // resul = parseInt(numero1) + parseInt(numero2)
+        let operacion = this.operacionMatematica.toString()
+        operacion = operacion.replace(/,/g, '')
+        if( calculadora.ultimoNumero !== '' && this.operacionMatematica.length === 1){
+             calculadora.ultimoNumero = calculadora.ultimoNumero.toString().replace('(', '').replace(')', '')
+             calculadora.ultimoNumero = parseInt(calculadora.ultimoNumero)
+             resultado = eval( parseInt( operacion ) +  parseInt( calculadora.ultimoNumero ) )
+        }else{
+            resultado = eval(operacion)
+        }
+        
+        if (resultado.toString().length > 8 ){
+            resultado = resultado.toString().substring( 8, resultado.length - 1 )
+        }
         document.getElementById('display').innerHTML = resultado
-        numero1 = ''
-        numero2 = ''
-        resul = 0
-        this.operacionMatematica = resultado
+        this.operacionMatematica = []
     }
-
 };
 
 calculadora.init();
