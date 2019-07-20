@@ -121,7 +121,6 @@ var calculadora = {
     //Se asigna el número en la pantalla se hace validación de 
     //puntos y la longitud del números
     asignarNumeroEnPantalla : function(numero, longitud){
-        document.getElementById(numero).style.transform = 'scale(0.8)';
         if( longitud < 8 ){
             if( longitud === 1 && pantalla.innerHTML === '0' && numero !== '.'){
                 pantalla.innerHTML = ''
@@ -133,7 +132,6 @@ var calculadora = {
                 }
             }
             pantalla.innerHTML += numero
-            document.getElementById(numero).style.transform = 'scale(1)';
         }
     },
 
@@ -199,7 +197,11 @@ var calculadora = {
              calculadora.ultimoNumero = parseInt(calculadora.ultimoNumero)
              resultado = eval( parseInt( operacion ) +  parseInt( calculadora.ultimoNumero ) )
         }else{
-            resultado = eval(operacion)
+             if( this.operacionMatematica.length % 2 === 0){
+                 resultado = 'ERROR'
+             }else{
+                resultado = eval(operacion)
+             }
         }
         
         if (resultado.toString().length > 8 ){
